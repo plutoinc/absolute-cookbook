@@ -7,6 +7,6 @@
 docker_container 'geth' do
   repo 'ethereum/client-go'
   port '8545:8545'
-  command '--rpc --rpcaddr "0.0.0.0"'
+  command '--fast --rinkeby --rpc --rpcaddr "0.0.0.0"'
   action :run
 end
