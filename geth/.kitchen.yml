@@ -17,10 +17,13 @@ platforms:
   - name: centos-7.3
 
 suites:
-  - name: default
+  - name: setup
     run_list:
-      - recipe[geth::default]
+      - recipe[geth::setup]
     verifier:
       inspec_tests:
         - test/smoke/default
     attributes:
+  - name: deploy
+    run_list:
+      - recipe[geth::deploy]

@@ -1,14 +1,13 @@
 #
 # Cookbook:: geth
-# Recipe:: default
+# Recipe:: setup
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
-docker_image 'ethereum/client-go' do
-  tag 'alpine'
-  action :pull
+
+docker_service 'default' do
+  action [:create, :start]
 end
 
-docker_container 'geth' do
-  repo 'ethereum/client-go'
-  tag 'alpine'
+docker_image 'ethereum/client-go' do
+  action :pull
 end
