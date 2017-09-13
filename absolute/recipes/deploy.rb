@@ -4,7 +4,7 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
-Chef::Log.info("Absolute application deployment script.")
+Chef::Log.info('Absolute application deployment script.')
 
 docker_service 'default' do
   Chef::Log.info('Create and start docker service.')
