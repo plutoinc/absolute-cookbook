@@ -31,9 +31,9 @@ service 'nginx' do
 end
 
 Chef::Log.info('Starting application...')
-execute 'java -jar -Dspring.profiles.active=dev -Djava.security.egd=file:/dev/./urandom -jar build/libs/absolute-0.0.1.jar' do
+execute 'java -Dspring.profiles.active=dev -Djava.security.egd=file:/dev/./urandom -jar build/libs/absolute-0.0.1.jar' do
   cwd app_path
   user 'root'
-  command 'java -jar -Dspring.profiles.active=dev -Djava.security.egd=file:/dev/./urandom -jar build/libs/absolute-0.0.1.jar'
+  command 'nohup java -Dspring.profiles.active=dev -Djava.security.egd=file:/dev/./urandom -jar build/libs/absolute-0.0.1.jar &'
   action :run
 end
