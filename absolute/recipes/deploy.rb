@@ -9,7 +9,7 @@ Chef::Log.info('Absolute application deployment script.')
 app = search('aws_opsworks_app').first
 app_path = "/srv/#{app['shortname']}"
 app_envar = app['environment']
-app_profile = envar['SPRING_PROFILE']
+app_profile = app_envar['SPRING_PROFILE']
 
 Chef::Log.info("Clonning repository from github into #{app_path}.")
 git app_path do
