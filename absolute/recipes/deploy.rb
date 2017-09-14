@@ -31,10 +31,24 @@ service 'nginx' do
 end
 
 Chef::Log.info('Starting application...')
+execute 'rm -f /etc/init.d/absolute' do
+  command 'rm -f /etc/init.d/absolute'
+  user 'root'
+  action :run
+end
+
+file "#{app_path}/build/libs/absolute-0.0.1.conf" do
+  content 'JAVA_OPTS=-Dspring.profiles.active=dev'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
 execute 'ln -s build/libs/absolute-0.0.1.jar /etc/init.d/absolute' do
   cwd app_path
   user 'root'
-  command 'ln -s build/libs/absolute-0.0.1.jar /etc/init.d/absolute'
+  command "ln -s #{app_path}/build/libs/absolute-0.0.1.jar /etc/init.d/absolute"
   action :run
 end
 
