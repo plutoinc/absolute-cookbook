@@ -21,7 +21,7 @@ Chef::Log.info('Building the application using gradle.')
 execute './gradlew build' do
   cwd app_path
   user 'root'
-  command './gradlew build'
+  command './gradlew build --debug'
   action :run
 end
 
