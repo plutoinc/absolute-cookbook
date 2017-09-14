@@ -13,6 +13,7 @@ Chef::Log.info('Clonning repository from github.')
 git app_path do
   repository app['app_source']['url']
   revision app['app_source']['revision']
+  enable_submodules true
   action :sync
 end
 
