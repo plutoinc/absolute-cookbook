@@ -6,15 +6,25 @@
 
 Chef::Log.info('Absolute application deployment script.')
 
-node[:deploy].each do |application, deploy|
-  execute './gradlew build' do
-    cwd "#{deploy[:deploy_to]}/current"
-    user 'deploy'
-    command './gradlew build'
-    action :run
-  end
+app = search('aws_opsworks_app').first
+app_path = "/srv/#{app['shortname']}"
+
+Chef::Log.info('Clonning repository from github.')
+git app_path do
+  repository app['app_source']['url']
+  revision app['app_source']['revision']
+  action :sync
 end
 
+Chef::Log.info('Building the application using gradle.')
+execute './gradlew build' do
+  cwd "#{app_path}"
+  user 'root'
+  command './gradlew build'
+  action :run
+end
+
+Chef::Log.info('Starting nginx...')
 service 'nginx' do
   action :start
 end
