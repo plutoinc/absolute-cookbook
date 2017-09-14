@@ -25,11 +25,6 @@ execute './gradlew build' do
   action :run
 end
 
-Chef::Log.info('Starting nginx...')
-service 'nginx' do
-  action :start
-end
-
 Chef::Log.info('Starting application...')
 execute 'rm -f /etc/init.d/absolute' do
   command 'rm -f /etc/init.d/absolute'
@@ -53,5 +48,10 @@ execute 'ln -s build/libs/absolute-0.0.1.jar /etc/init.d/absolute' do
 end
 
 service 'absolute' do
+  action :start
+end
+
+Chef::Log.info('Starting nginx...')
+service 'nginx' do
   action :restart
 end
