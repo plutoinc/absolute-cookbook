@@ -1,12 +1,12 @@
 #
-# Cookbook:: absolute
+# Cookbook:: alfred
 # Recipe:: deploy
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
-Chef::Log.info('Absolute application deployment script.')
+Chef::Log.info('Alfred application deployment script.')
 
-app = search('aws_opsworks_app').first
+app = search('aws_opsworks_app')[1]
 app_path = "/srv/#{app['shortname']}"
 
 Chef::Log.info("Clonning repository from github into #{app_path}.")
@@ -26,13 +26,13 @@ execute './gradlew build' do
 end
 
 Chef::Log.info('Starting application...')
-execute 'rm -f /etc/init.d/absolute' do
-  command 'rm -f /etc/init.d/absolute'
+execute 'rm -f /etc/init.d/alfred' do
+  command 'rm -f /etc/init.d/alfred'
   user 'root'
   action :run
 end
 
-file "#{app_path}/build/libs/absolute-0.0.1.conf" do
+file "#{app_path}/build/libs/alfred-0.0.1.conf" do
   content 'JAVA_OPTS=-Dspring.profiles.active=dev'
   owner 'root'
   group 'root'
@@ -40,14 +40,14 @@ file "#{app_path}/build/libs/absolute-0.0.1.conf" do
   action :create
 end
 
-execute 'ln -s build/libs/absolute-0.0.1.jar /etc/init.d/absolute' do
+execute 'ln -s build/libs/alfred-0.0.1.jar /etc/init.d/alfred' do
   cwd app_path
   user 'root'
-  command "ln -s #{app_path}/build/libs/absolute-0.0.1.jar /etc/init.d/absolute"
+  command "ln -s #{app_path}/build/libs/alfred-0.0.1.jar /etc/init.d/alfred"
   action :run
 end
 
-service 'absolute' do
+service 'alfred' do
   action :start
 end
 
