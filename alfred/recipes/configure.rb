@@ -17,3 +17,7 @@ cookbook_file '/etc/nginx/nginx.conf' do
   mode '0755'
   action :create
 end
+
+service 'nginx' do
+  action :restart
+end
