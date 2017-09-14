@@ -53,5 +53,5 @@ execute 'ln -s build/libs/absolute-0.0.1.jar /etc/init.d/absolute' do
 end
 
 service 'absolute' do
-  action :start
+  action :restart
 end
