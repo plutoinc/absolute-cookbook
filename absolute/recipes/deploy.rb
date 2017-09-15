@@ -45,7 +45,7 @@ execute 'rm -f /etc/init.d/absolute' do
 end
 
 file "#{app_path}/build/libs/absolute-0.0.1.conf" do
-  content 'JAVA_OPTS=-Dspring.profiles.active=dev'
+  content "JAVA_OPTS=-Dspring.profiles.active=#{app_profile}"
   owner 'root'
   group 'root'
   mode '0644'

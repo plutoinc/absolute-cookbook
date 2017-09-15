@@ -8,6 +8,8 @@ Chef::Log.info('Alfred application deployment script.')
 
 app = search('aws_opsworks_app')[1]
 app_path = "/srv/#{app['shortname']}"
+app_envar = app['environment']
+app_profile = app_envar['SPRING_PROFILE']
 
 Chef::Log.info("Clonning repository from github into #{app_path}.")
 git app_path do
@@ -15,6 +17,16 @@ git app_path do
   revision app['app_source']['revision']
   enable_submodules true
   action :sync
+end
+
+Chef::Log.info('Writing properties file.')
+template "#{app_path}/src/main/resources/application-#{app_profile}.properties" do
+  source 'application_properties.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  variables(envar: app_envar)
+  action :create
 end
 
 Chef::Log.info('Building the application using gradle.')
@@ -33,7 +45,7 @@ execute 'rm -f /etc/init.d/alfred' do
 end
 
 file "#{app_path}/build/libs/alfred-0.0.1.conf" do
-  content 'JAVA_OPTS=-Dspring.profiles.active=dev'
+  content "JAVA_OPTS=-Dspring.profiles.active=#{app_profile}"
   owner 'root'
   group 'root'
   mode '0644'
