@@ -64,6 +64,18 @@ service 'absolute' do
 end
 
 Chef::Log.info('Starting nginx...')
+file '/etc/nginx/nginx.conf' do
+  action :delete
+end
+
+cookbook_file '/etc/nginx/nginx.conf' do
+  source 'nginx.conf'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
 service 'nginx' do
   action :restart
 end
