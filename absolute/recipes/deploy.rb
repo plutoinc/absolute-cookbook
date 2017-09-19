@@ -37,7 +37,6 @@ execute './gradlew build' do
   action :run
 end
 
-Chef::Log.info('Starting application...')
 execute 'rm -f /etc/init.d/absolute' do
   command 'rm -f /etc/init.d/absolute'
   user 'root'
@@ -59,11 +58,8 @@ execute 'ln -s build/libs/absolute-0.0.1.jar /etc/init.d/absolute' do
   action :run
 end
 
-service 'absolute' do
-  action :start
-end
+Chef::Log.info('Configuring nginx...')
 
-Chef::Log.info('Starting nginx...')
 file '/etc/nginx/nginx.conf' do
   action :delete
 end
@@ -74,8 +70,4 @@ cookbook_file '/etc/nginx/nginx.conf' do
   group 'root'
   mode '0755'
   action :create
-end
-
-service 'nginx' do
-  action :restart
 end

@@ -37,7 +37,6 @@ execute './gradlew build' do
   action :run
 end
 
-Chef::Log.info('Starting application...')
 execute 'rm -f /etc/init.d/alfred' do
   command 'rm -f /etc/init.d/alfred'
   user 'root'
@@ -59,11 +58,7 @@ execute 'ln -s build/libs/alfred-0.0.1.jar /etc/init.d/alfred' do
   action :run
 end
 
-service 'alfred' do
-  action :start
-end
-
-Chef::Log.info('Starting nginx...')
+Chef::Log.info('Configuring nginx...')
 file '/etc/nginx/nginx.conf' do
   action :delete
 end
@@ -74,8 +69,4 @@ cookbook_file '/etc/nginx/nginx.conf' do
   group 'root'
   mode '0755'
   action :create
-end
-
-service 'nginx' do
-  action :restart
 end
