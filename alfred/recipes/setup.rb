@@ -42,6 +42,7 @@ directory '/srv/pkg' do
   owner 'root'
   group 'root'
   mode '0755'
+  recursive true
   action :create
 end
 
@@ -72,6 +73,7 @@ directory '/srv/aws' do
   owner 'root'
   group 'root'
   mode '0755'
+  recursive true
   action :create
 end
 
@@ -89,6 +91,7 @@ directory node['PLUTO_BUCKET_MOUNT_PATH'] do
   owner 'root'
   group 'root'
   mode '0755'
+  recursive true
   action :create
 end
 
