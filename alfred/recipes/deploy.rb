@@ -19,6 +19,15 @@ git app_path do
   action :sync
 end
 
+Chef::Log.info('Downloading root wallet file from S3.')
+ENV['AWS_ACCESS_KEY_ID'] = node['PLUTO_AWS_ACCESS_KEY']
+ENV['AWS_SECRET_ACCESS_KEY'] = node['PLUTO_AWS_SECRET_KEY']
+execute 'copy root wallet file from s3' do
+  command "aws s3 cp s3://#{node['PLUTO_AWS_S3_BUCKET_NAME']}/#{node['PLUTO_ROOT_WALLET_KEY']} #{app_path}/src/main/resources/pluto.json"
+  user 'root'
+  action :run
+end
+
 Chef::Log.info('Writing properties file.')
 template "#{app_path}/src/main/resources/application-#{app_profile}.properties" do
   source 'application_properties.erb'
