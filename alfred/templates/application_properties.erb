@@ -3,9 +3,9 @@ spring.datasource.username=<%= @envar['PLUTO_DATASOURCE_USERNAME'] %>
 spring.datasource.password=<%= @envar['PLUTO_DATASOURCE_PASSWORD'] %>
 spring.jpa.hibernate.ddl-auto=validate
 
-cloud.aws.credentials.accessKey=<%= @envar['PLUTO_AWS_ACCESS_KEY'] %>
-cloud.aws.credentials.secretKey=<%= @envar['PLUTO_AWS_SECRET_KEY'] %>
-cloud.aws.region.static=<%= @envar['PLUTO_AWS_REGION'] %>
+cloud.aws.credentials.accessKey=<%= @aws_access_key %>
+cloud.aws.credentials.secretKey=<%= @aws_secret_key %>
+cloud.aws.region.static=<%= @aws_region %>
 
 pluto.geth.url=<%= @envar['PLUTO_GETH_URL'] %>
-pluto.aws.s3.bucket_name=<%= @envar['PLUTO_AWS_S3_BUCKET_NAME'] %>
+pluto.aws.s3.bucket_name=<%= @aws_s3_bucket_name %>
