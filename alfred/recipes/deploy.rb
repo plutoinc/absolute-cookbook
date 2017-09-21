@@ -11,6 +11,24 @@ app_path = "/srv/#{app['shortname']}"
 app_envar = app['environment']
 app_profile = app_envar['SPRING_PROFILE']
 
+aws_passwd_path = '/srv/aws/passwd'
+s3_mount_path = '/srv/mnt/pluto_s3'
+Chef::Log.info("Saving credential into #{s3_mount_path}")
+file aws_passwd_path do
+  content "#{app_envar['PLUTO_AWS_ACCESS_KEY']}:#{app_envar['PLUTO_AWS_SECRET_KEY']}"
+  owner 'root'
+  group 'root'
+  mode '0600'
+  action :create
+end
+
+Chef::Log.info("Mounting s3 bucket into #{s3_mount_path}")
+execute 'maing s3fs connection' do
+  user 'root'
+  command "s3fs #{app_envar['PLUTO_AWS_S3_BUCKET_NAME']} #{s3_mount_path} -o passwd_file=#{aws_passwd_path}"
+  action :run
+end
+
 Chef::Log.info("Clonning repository from github into #{app_path}.")
 git app_path do
   repository app['app_source']['url']
