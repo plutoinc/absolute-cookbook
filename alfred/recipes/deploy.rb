@@ -59,7 +59,7 @@ execute 'rm -f /etc/init.d/alfred' do
 end
 
 file "#{app_path}/build/libs/alfred-0.0.1.conf" do
-  content "AWS_ACCESS_KEY_ID=#{node['PLUTO_AWS_ACCESS_KEY']}\nAWS_SECRET_KEY=#{node['PLUTO_AWS_SECRET_KEY']}\nJAVA_OPTS=-Dspring.profiles.active=#{app_profile}"
+  content "AWS_ACCESS_KEY_ID=#{node['PLUTO_AWS_ACCESS_KEY']}\nAWS_SECRET_KEY=#{node['PLUTO_AWS_SECRET_KEY']}\nJAVA_OPTS=\"-Xbootclasspath/p:#{app_path}/libs/alpn-boot-8.1.11.v20170118.jar -Dspring.profiles.active=#{app_profile}\""
   owner 'root'
   group 'root'
   mode '0644'
