@@ -32,10 +32,7 @@ template "#{app_path}/src/main/resources/application-#{app_profile}.properties" 
   owner 'root'
   group 'root'
   mode '0644'
-  variables(
-    envar: app_envar,
-    aws_s3_bucket_name: node['PLUTO_AWS_S3_BUCKET_NAME']
-  )
+  variables(envar: app_envar)
   action :create
 end
 
