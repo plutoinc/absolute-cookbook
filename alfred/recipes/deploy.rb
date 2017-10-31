@@ -20,8 +20,6 @@ git app_path do
 end
 
 Chef::Log.info('Downloading root wallet file from S3.')
-ENV['AWS_ACCESS_KEY_ID'] = node['PLUTO_AWS_ACCESS_KEY']
-ENV['AWS_SECRET_ACCESS_KEY'] = node['PLUTO_AWS_SECRET_KEY']
 execute 'copy root wallet file from s3' do
   command "aws s3 cp s3://#{node['PLUTO_AWS_S3_BUCKET_NAME']}/#{node['PLUTO_ROOT_WALLET_KEY']} #{app_path}/src/main/resources/pluto.json"
   user 'root'
@@ -36,9 +34,6 @@ template "#{app_path}/src/main/resources/application-#{app_profile}.properties" 
   mode '0644'
   variables(
     envar: app_envar,
-    aws_access_key: node['PLUTO_AWS_ACCESS_KEY'],
-    aws_secret_key: node['PLUTO_AWS_SECRET_KEY'],
-    aws_region: node['PLUTO_AWS_REGION'],
     aws_s3_bucket_name: node['PLUTO_AWS_S3_BUCKET_NAME']
   )
   action :create
@@ -59,7 +54,7 @@ execute 'rm -f /etc/init.d/alfred' do
 end
 
 file "#{app_path}/build/libs/alfred-0.0.1.conf" do
-  content "AWS_ACCESS_KEY_ID=#{node['PLUTO_AWS_ACCESS_KEY']}\nAWS_SECRET_KEY=#{node['PLUTO_AWS_SECRET_KEY']}\nJAVA_OPTS=\"-Dspring.profiles.active=#{app_profile}\""
+  content "JAVA_OPTS=\"-Dspring.profiles.active=#{app_profile}\""
   owner 'root'
   group 'root'
   mode '0644'
