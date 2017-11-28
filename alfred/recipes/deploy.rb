@@ -21,7 +21,7 @@ end
 
 Chef::Log.info('Downloading root wallet file from S3.')
 execute 'copy root wallet file from s3' do
-  command "aws s3 cp s3://#{node['PLUTO_AWS_S3_BUCKET_NAME']}/#{node['PLUTO_ROOT_WALLET_KEY']} #{app_path}/src/main/resources/pluto.json"
+  command "aws s3 cp s3://#{app_envar['PLUTO_AWS_S3_BUCKET_NAME']}/#{app_envar['PLUTO_ROOT_WALLET_NAME']} #{app_path}/src/main/resources/pluto.json"
   user 'root'
   action :run
 end
