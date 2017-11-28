@@ -10,8 +10,3 @@ Chef::Log.info('Stopping application...')
 service 'absolute' do
   action :stop
 end
-
-Chef::Log.info('Stopping nginx...')
-service 'nginx' do
-  action :stop
-end

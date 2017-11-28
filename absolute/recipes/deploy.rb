@@ -62,14 +62,3 @@ execute 'ln -s build/libs/absolute-0.0.1.jar /etc/init.d/absolute' do
   command "ln -s #{app_path}/build/libs/absolute-0.0.1.jar /etc/init.d/absolute"
   action :run
 end
-
-Chef::Log.info('Configuring nginx...')
-template "/etc/nginx/nginx.conf" do
-  source 'nginx_conf.erb'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  variables(envar: app_envar)
-  action :create
-end
-
