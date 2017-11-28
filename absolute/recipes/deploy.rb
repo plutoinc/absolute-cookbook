@@ -11,6 +11,11 @@ app_path = "/srv/#{app['shortname']}"
 app_envar = app['environment']
 app_profile = app_envar['SPRING_PROFILE']
 
+Chef::Log.info('Stopping application...')
+service 'absolute' do
+  action :stop
+end
+
 Chef::Log.info("Clonning repository from github into #{app_path}.")
 git app_path do
   repository app['app_source']['url']
