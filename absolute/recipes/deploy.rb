@@ -59,15 +59,12 @@ execute 'ln -s build/libs/absolute-0.0.1.jar /etc/init.d/absolute' do
 end
 
 Chef::Log.info('Configuring nginx...')
-
-file '/etc/nginx/nginx.conf' do
-  action :delete
-end
-
-cookbook_file '/etc/nginx/nginx.conf' do
-  source 'nginx.conf'
+template "/etc/nginx/nginx.conf" do
+  source 'nginx_conf.erb'
   owner 'root'
   group 'root'
   mode '0755'
+  variables(envar: app_envar)
   action :create
 end
+
