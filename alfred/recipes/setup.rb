@@ -7,7 +7,6 @@
 packages_to_install = [
   'java-1.8.0-openjdk-devel',
   'git',
-  'nginx',
 ]
 packages_to_remove = ['java-1.7.0-openjdk']
 

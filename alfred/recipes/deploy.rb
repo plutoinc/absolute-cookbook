@@ -69,16 +69,3 @@ execute 'ln -s build/libs/alfred-0.0.1.jar /etc/init.d/alfred' do
   command "ln -s #{app_path}/build/libs/alfred-0.0.1.jar /etc/init.d/alfred"
   action :run
 end
-
-Chef::Log.info('Configuring nginx...')
-file '/etc/nginx/nginx.conf' do
-  action :delete
-end
-
-cookbook_file '/etc/nginx/nginx.conf' do
-  source 'nginx.conf'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
-end
