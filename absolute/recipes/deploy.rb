@@ -11,6 +11,11 @@ app_path = "/srv/#{app['shortname']}"
 app_envar = app['environment']
 app_profile = app_envar['SPRING_PROFILE']
 
+Chef::Log.info('Stopping application...')
+service 'absolute' do
+  action :stop
+end
+
 Chef::Log.info("Clonning repository from github into #{app_path}.")
 git app_path do
   repository app['app_source']['url']
@@ -56,18 +61,4 @@ execute 'ln -s build/libs/absolute-0.0.1.jar /etc/init.d/absolute' do
   user 'root'
   command "ln -s #{app_path}/build/libs/absolute-0.0.1.jar /etc/init.d/absolute"
   action :run
-end
-
-Chef::Log.info('Configuring nginx...')
-
-file '/etc/nginx/nginx.conf' do
-  action :delete
-end
-
-cookbook_file '/etc/nginx/nginx.conf' do
-  source 'nginx.conf'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
 end

@@ -11,11 +11,6 @@ service 'alfred' do
   action :stop
 end
 
-Chef::Log.info('Stopping nginx...')
-service 'nginx' do
-  action :stop
-end
-
 Chef::Log.info('Deleting application files...')
 file '/etc/init.d/alfred' do
   action :delete

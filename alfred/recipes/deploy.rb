@@ -11,6 +11,11 @@ app_path = "/srv/#{app['shortname']}"
 app_envar = app['environment']
 app_profile = app_envar['SPRING_PROFILE']
 
+Chef::Log.info('Stopping application...')
+service 'alfred' do
+  action :stop
+end
+
 Chef::Log.info("Clonning repository from github into #{app_path}.")
 git app_path do
   repository app['app_source']['url']
@@ -21,7 +26,7 @@ end
 
 Chef::Log.info('Downloading root wallet file from S3.')
 execute 'copy root wallet file from s3' do
-  command "aws s3 cp s3://#{node['PLUTO_AWS_S3_BUCKET_NAME']}/#{node['PLUTO_ROOT_WALLET_KEY']} #{app_path}/src/main/resources/pluto.json"
+  command "aws s3 cp s3://#{app_envar['PLUTO_AWS_S3_BUCKET_NAME']}/#{app_envar['PLUTO_ROOT_WALLET_NAME']} #{app_path}/src/main/resources/pluto.json"
   user 'root'
   action :run
 end
@@ -63,17 +68,4 @@ execute 'ln -s build/libs/alfred-0.0.1.jar /etc/init.d/alfred' do
   user 'root'
   command "ln -s #{app_path}/build/libs/alfred-0.0.1.jar /etc/init.d/alfred"
   action :run
-end
-
-Chef::Log.info('Configuring nginx...')
-file '/etc/nginx/nginx.conf' do
-  action :delete
-end
-
-cookbook_file '/etc/nginx/nginx.conf' do
-  source 'nginx.conf'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
 end
