@@ -24,16 +24,6 @@ git app_path do
   action :sync
 end
 
-Chef::Log.info('Writing properties file.')
-template "#{app_path}/src/main/resources/application-#{app_profile}.properties" do
-  source 'application_properties.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  variables(envar: app_envar)
-  action :create
-end
-
 Chef::Log.info('Building the application using gradle.')
 execute './gradlew build' do
   cwd app_path
